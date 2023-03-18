@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const Dashboard = () => {
-  
+export default function Dashboard() {
+  const [data, setData] = useState([]);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("/user")
+      .then((response) => setData(response.data))
+      .catch((error) => setMessage(error.message));
+  }, []);
+
   return (
     <div>
-     <h1>Welcome to dashboard</h1>
+      {message != "" ? (
+        <h3>{message}</h3>
+      ) : (
+        <ul>
+          {data.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
-};
-
-export default Dashboard;
+}
