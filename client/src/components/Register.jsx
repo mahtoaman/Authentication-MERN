@@ -1,16 +1,31 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:4000";
 
 export default function Register() {
+  const Navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const registerUser = async (e) => {
     e.preventDefault();
+    const response = await fetch("http://localhost:4000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-    const data = { email, password };
-    axios.post("/register", data).then();
+    const data = await response.json();
+
+    if (data.status === "ok") {
+      Navigate("/login");
+    }
   };
 
   return (

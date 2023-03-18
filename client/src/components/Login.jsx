@@ -1,37 +1,58 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const Login = () => {
+function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // handle login logic here
-  };
+  async function loginUser(event) {
+    event.preventDefault();
+console.log('trying to login from frontend')
+    const response = await fetch("http://localhost:4000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+    console.log('this is data after fetching from login')
+    console.log(data)
+
+    if (data.user) {
+      localStorage.setItem("token", data.user);
+      alert("Login successful");
+      window.location.href = "/dashboard";
+    } else {
+      alert("Please check your username and password");
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Email:
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={loginUser}>
         <input
-          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          placeholder="Email"
         />
-      </label>
-      <br />
-      <label>
-        Password:
+        <br />
         <input
-          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          type="password"
+          placeholder="Password"
         />
-      </label>
-      <br />
-      <button type="submit">Login</button>
-    </form>
+        <br />
+        <input type="submit" value="Login" />
+      </form>
+    </div>
   );
-};
+}
 
-export default Login;
+export default App;
