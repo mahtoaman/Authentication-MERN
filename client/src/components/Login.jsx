@@ -6,7 +6,6 @@ function App() {
 
   async function loginUser(event) {
     event.preventDefault();
-console.log('trying to login from frontend')
     const response = await fetch("http://localhost:4000/login", {
       method: "POST",
       headers: {
@@ -19,11 +18,10 @@ console.log('trying to login from frontend')
     });
 
     const data = await response.json();
-    console.log('this is data after fetching from login')
-    console.log(data)
+    console.log(data);
 
-    if (data.user) {
-      localStorage.setItem("token", data.user);
+    if (data.status) {
+      localStorage.setItem("token", data.token);
       alert("Login successful");
       window.location.href = "/dashboard";
     } else {

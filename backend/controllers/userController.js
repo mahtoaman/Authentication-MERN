@@ -2,7 +2,6 @@ const express = require("express");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const fs = require("fs");
 
 //=========================================================REGISTER==================================================
 async function regiserUser(req, res) {
@@ -13,7 +12,7 @@ async function regiserUser(req, res) {
   const hash = bcrypt.hashSync(password, 10);
   data["password"] = hash;
 
-  let userModel = await userModel.create(data);
+  let user = await userModel.create(data);
 
   res.status(200).send({ status: "ok" });
 }
@@ -40,43 +39,32 @@ async function login(req, res) {
       },
       "secret123"
     );
-    // console.log(token);
-    res.cookie("jwt", token, {
-      expires: new Date(Date.now() + 259000000),
-    });
-    return res.json({ status: "ok", user: token });
+
+    return res.json({ status: "ok", token: token });
   } else {
     return res.json({ status: "error", user: false });
   }
 }
-
-//=====================================================GET USER=====================================
+//================================================GET USER=====================================
 async function getUser(req, res) {
   try {
-    // let token = req.headers.authorization;
-    //  let token = fs.readFile('token', "utf8", (err, data) => {
-    //     if (err) {
-    //       console.error(err);
-    //       return;
-    //     }
-    //     console.log(data);
-    //   });
-
-    //   console.log(token)
-    const token = req.cookies.token;
+    let token = req.headers.authorization;
+    console.log("token backend wla token");
+    console.log(token);
     if (!token)
       return res
         .status(400)
         .send({ status: false, msg: "token must be present" });
-    token = req.headers.authorization.split(" ")[1];
+    token = req.headers.authorization;
 
     let decoded = jwt.verify(token, "secret123");
     console.log(decoded);
 
     const email = decoded.email;
     const user = await userModel.findOne({ email: email });
+    console.log("user"+user);
 
-    return res.json({ status: "ok", data: user });
+    return res.status(200).send({ status: "ok", data: user });
   } catch (error) {
     console.log(error);
     res.status(500).send({ status: "error", error: "invalid token" });
