@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function App() {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,7 +22,6 @@ function App() {
 
     if (data.data) {
       localStorage.setItem("token", data.data);
-      // console.log(localStorage.getItem("token"))
       alert("Login successful");
       window.location.href = "/dashboard";
     } else {
@@ -31,8 +30,7 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="login-container">
       <form onSubmit={loginUser}>
         <input
           value={email}
@@ -54,4 +52,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

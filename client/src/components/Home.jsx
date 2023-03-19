@@ -1,17 +1,22 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
     <>
-      <div>
-        <h1>This is Home</h1>
+      <div className="header">
+        <h1>MERN Stack Authentication</h1>
       </div>
-      <div>
-        <Link to={"/"}>Home |</Link>
-        <Link to={"/login"}>Login| </Link>
-        <Link to={"/register"}>Register |</Link>
+      <div className="nav-links">
+        <Link to={"/"} className="nav-link">
+          Home
+        </Link>
+        <Link to={"/login"} className="nav-link">
+          Login
+        </Link>
+        <Link to={"/register"} className="nav-link">
+          Register
+        </Link>
       </div>
     </>
   );

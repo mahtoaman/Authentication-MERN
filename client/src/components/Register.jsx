@@ -5,6 +5,7 @@ axios.defaults.baseURL = "http://localhost:4000";
 
 export default function Register() {
   const Navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,6 +17,7 @@ export default function Register() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        name,
         email,
         password,
       }),
@@ -23,28 +25,43 @@ export default function Register() {
 
     const data = await response.json();
 
-    if (data.status === "ok") {
+    if (data.status) {
+      alert(data.message);
       Navigate("/login");
+    } else {
+      alert(data.message);
+      Navigate("/register");
     }
   };
 
   return (
-    <form action="" onSubmit={registerUser}>
-      <input
-        type="email"
-        placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <br />
-      <input
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <button type="submit">Register</button>
-    </form>
+    <div className="container">
+      <form className="register-form" onSubmit={registerUser}>
+        <input
+          type="name"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input-field"
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="input-field"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="input-field"
+        />
+        <button type="submit" className="submit-btn">
+          Register
+        </button>
+      </form>
+    </div>
   );
 }
