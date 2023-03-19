@@ -4,6 +4,7 @@ import axios from "axios";
 export default function Dashboard() {
   // const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  console.log(token)
 
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
@@ -16,11 +17,10 @@ export default function Dashboard() {
         },
       })
       .then(function (response) {
-        setData(response.data);
-        console.log(response.data.data.email)
+        setData(response.data.data);
+        // console.log(response.data.data)
       })
       .catch((error) => setMessage(error.message));
   }, []);
-
-  return <div>Welcome {data.data.email}</div>;
+  return <div>Welcome {data.email}</div>;
 }

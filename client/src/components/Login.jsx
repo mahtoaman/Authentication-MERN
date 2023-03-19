@@ -20,8 +20,9 @@ function App() {
     const data = await response.json();
     console.log(data);
 
-    if (data.status) {
-      localStorage.setItem("token", data.token);
+    if (data.data) {
+      localStorage.setItem("token", data.data);
+      // console.log(localStorage.getItem("token"))
       alert("Login successful");
       window.location.href = "/dashboard";
     } else {

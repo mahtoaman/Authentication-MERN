@@ -40,7 +40,7 @@ async function login(req, res) {
       "secret123"
     );
 
-    return res.json({ status: "ok", token: token });
+    return res.status(200).send({ status: "Success", data: token });
   } else {
     return res.json({ status: "error", user: false });
   }
@@ -62,7 +62,7 @@ async function getUser(req, res) {
 
     const email = decoded.email;
     const user = await userModel.findOne({ email: email });
-    console.log("user"+user);
+    console.log("user "+user);
 
     return res.status(200).send({ status: "ok", data: user });
   } catch (error) {
